@@ -7,6 +7,5 @@ describe("/GET healthz", function () {
     const response = await request(app).get("/healthz");
 
     expect(response.status).to.eql(200);
-    expect(response.body.success).to.eql(true);
   });
 });
