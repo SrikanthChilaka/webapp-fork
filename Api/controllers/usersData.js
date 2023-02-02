@@ -8,7 +8,10 @@ function putvalidation(id, password, first_name, last_name) {
 }
 
 function postvalidation(username, password, first_name, last_name) {
+  const emailRegex =new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
+  const isValidEmail = emailRegex.test(username);
   if (!username || !password || !first_name || !last_name) return false;
+  else if(!isValidEmail)return false;
   else return true;
 }
 
@@ -175,9 +178,9 @@ const update_User = async (request, response) => {
 
 const healthCheck = async (request, response) => {
   try {
-    response.status(200).send({ message: "All good" });
+    response.status(200).send({ message: "Health check completed successfully" });
   } catch (error) {
-    response.status(404).send({ message: "Resource not available" });
+    response.status(404).send({ message: "Health check failed" });
   }
 };
 
