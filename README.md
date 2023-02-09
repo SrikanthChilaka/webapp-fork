@@ -15,6 +15,7 @@ As a user, I will be able to update and get the account information after enteri
 
 As a user, I can also add products, update them respectively.
 ## Requirements
+
 Node.js
 Express.js
 Sequelize
