@@ -1,4 +1,4 @@
-# CSYE6225 Network Structures and Cloud Computing Assignment-1
+# CSYE6225 Network Structures and Cloud Computing Assignment-2
 
 ## Srikanth Chilaka - 002780059
 
@@ -12,6 +12,8 @@ As a user, I will be able to create an account by providing the following inform
     Last Name
 
 As a user, I will be able to update and get the account information after entering the credentials using basic auth.
+
+As a user, I can also add products, update them respectively.
 ## Requirements
 Node.js
 Express.js
@@ -34,7 +36,17 @@ GET /v1/user/:id
 POST /v1/user
 
 ### Update User by id
-PUT /v1/user/i:d
+PUT /v1/user/:id
 
 ### Check health
-GET /healtz
+GET /healthz
+
+### Create Product
+POST /v1/product
+
+### Retrieve Product Details
+GET /v1/product/:productID
+
+### Update Product by id
+PUT /v1/product/:productID
+PATCH /v1/product/:productID

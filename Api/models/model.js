@@ -42,10 +42,39 @@ const User = sequelize.define("user", {
     timestamps: true
 });
 
-sequelize.sync().then(() => {
-    console.log('User table created successfully!');
-}).catch((error) => {
-    console.error('Unable to create table : ', error);
+const Product = sequelize.define("product", {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    sku: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    manufacturer: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    owner_user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    }
+    
+}, {
+    timestamps: true
 });
 
-module.exports = User;
+module.exports = {User, Product,sequelize};
