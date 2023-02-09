@@ -8,7 +8,9 @@ const {where} = require("sequelize");
 // User.hasMany(Product);
 
 function product_post_validation(name, description, sku, manufacturer, quantity) {
+
     if (!name || !description || !sku || !manufacturer || !quantity || typeof quantity === 'string' || quantity<0 || quantity>100) return false;
+
     else return true;
 }
 

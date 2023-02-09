@@ -60,6 +60,7 @@ const Product = sequelize.define("product", {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
+
     },
     manufacturer: {
         type: DataTypes.STRING,

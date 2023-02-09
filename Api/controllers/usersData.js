@@ -128,7 +128,9 @@ const update_User = async (request, response) => {
       response.status(400).send({
       message: "Bad Request. Cannot update",
     });
+
     } 
+
       else {
         User.findOne({
           where: {
@@ -137,6 +139,7 @@ const update_User = async (request, response) => {
         })
         .then(async (user) => {
           if (user) {
+
             const pass = !password ? decodedPassword : password
             const valid = await bcrypt.compare(decodedPassword,user.getDataValue("password")) 
             if (valid === true && decodedUsername === user.getDataValue("username")){
