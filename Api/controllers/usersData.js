@@ -128,18 +128,17 @@ const update_User = async (request, response) => {
       response.status(400).send({
       message: "Bad Request. Cannot update",
     });
-    } else if (putvalidation(id, password, first_name, last_name) === false) {
-        response.status(400).send({ message: "Wrong Inputs" });
-      } 
+    } 
       else {
         User.findOne({
           where: {
-            id: id,
+            username: decodedUsername,
           },
         })
         .then(async (user) => {
           if (user) {
-            const valid = await bcrypt.compare(decodedPassword,user.getDataValue("password"));
+            const pass = !password ? decodedPassword : password
+            const valid = await bcrypt.compare(decodedPassword,user.getDataValue("password")) 
             if (valid === true && decodedUsername === user.getDataValue("username")){
               const salt = await bcrypt.genSalt(10);
               let hash = await bcrypt.hash(password, salt);
