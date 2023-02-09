@@ -1,6 +1,6 @@
 const base64 = require("base-64");
 const bcrypt = require("bcrypt");
-const User = require("../models/model.js");
+const {User} = require("../models/model.js");
 
 function putvalidation(id, password, first_name, last_name) {
   if (!id || !password || !first_name || !last_name) return false;
@@ -18,7 +18,8 @@ function postvalidation(username, password, first_name, last_name) {
 const get_User = async (request, response) => {
   let authheader = request.headers.authorization;
   if (!authheader) {
-    return next(new ErrorResponse("User should provide authentication", 400));
+    response.status(400).send({
+      message: "No Auth",})
   }
   let auth = new Buffer.from(authheader.split(" ")[1], "base64").toString().split(":");
   let username = auth[0];
@@ -105,25 +106,32 @@ const create_User = async (request, response) => {
 };
 const update_User = async (request, response) => {
   const id = Number(request.params.id);
-  const encodedToken = request.headers.authorization.split(" ")[1];
-  const {
-    username,
-    first_name,
-    last_name,
-    account_created,
-    account_updated,
-    password,
-  } = request.body;
-  const baseToAlpha = base64.decode(encodedToken).split(":");
-  let decodedUsername = baseToAlpha[0];
-  let decodedPassword = baseToAlpha[1];
-  if (username || account_created || account_updated) {
+  if(!request.headers.authorization){
     response.status(400).send({
+      message: "No Auth",
+    })
+  }
+  else{
+    const encodedToken = request.headers.authorization.split(" ")[1];
+    const {
+      username,
+      first_name,
+      last_name,
+      account_created,
+      account_updated,
+      password,
+    } = request.body;
+    const baseToAlpha = base64.decode(encodedToken).split(":");
+    let decodedUsername = baseToAlpha[0];
+    let decodedPassword = baseToAlpha[1];
+    if (username || account_created || account_updated) {
+      response.status(400).send({
       message: "Bad Request. Cannot update",
     });
-  } else if (putvalidation(id, password, first_name, last_name) === false) {
-      response.status(400).send({ message: "Wrong Inputs" });
-    } else {
+    } else if (putvalidation(id, password, first_name, last_name) === false) {
+        response.status(400).send({ message: "Wrong Inputs" });
+      } 
+      else {
         User.findOne({
           where: {
             id: id,
@@ -131,18 +139,11 @@ const update_User = async (request, response) => {
         })
         .then(async (user) => {
           if (user) {
-          const valid = await bcrypt.compare(
-          decodedPassword,
-          user.getDataValue("password")
-          );
-          if (
-            valid === true &&
-            decodedUsername === user.getDataValue("username")
-          ){
+            const valid = await bcrypt.compare(decodedPassword,user.getDataValue("password"));
+            if (valid === true && decodedUsername === user.getDataValue("username")){
               const salt = await bcrypt.genSalt(10);
               let hash = await bcrypt.hash(password, salt);
-              User.update(
-              {
+              User.update({
                 password: hash,
                 first_name: first_name,
                 last_name: last_name,
@@ -150,30 +151,35 @@ const update_User = async (request, response) => {
               },
               {
                 where: {
-                id: id,
-                username: decodedUsername,
-              },
-              }
-              )
-              .then((result) => {
-              response.status(204).send({});
+                  id: id,
+                  username: decodedUsername,
+                },
               })
-              .catch(() => {
-              response.status(400).send({
-                message: "Bad Request. Incorrect inputs for Update",
-              });
-              });
-            } else if (
-                valid === false ||
-                decodedUsername !== user.getDataValue("username")
-              ) {
-                  response.status(401).send({ 
-                  message: "User Authentication failed" 
+                .then((result) => {
+                  response.status(204).send({});
+                })
+                .catch(() => {
+                  response.status(400).send({
+                  message: "Bad Request. Incorrect inputs for Update",
                   });
+                });
+                } 
+                else if(id!==user.getDataValue("id")){
+                  response.status(403).send({
+                    message:"Forbidden Error"
+                  })
                 }
+                else if (
+                    valid === false ||
+                    decodedUsername !== user.getDataValue("username")) 
+                    {
+                      response.status(401).send({ 
+                        message: "User Authentication failed" 
+                      });
+                    }
             }
           });
-      }
+        }}
 };
 
 const healthCheck = async (request, response) => {
