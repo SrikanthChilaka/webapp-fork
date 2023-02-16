@@ -179,11 +179,12 @@ const update_User = async (request, response) => {
                         message: "User Authentication failed" 
                       });
                     }
-                  else{
-                    response.status(401).send({ 
-                      message: "User Authentication failed" 
-                    });
-                  }
+                  
+            }
+            else{
+              response.status(401).send({ 
+                message: "User Authentication failed" 
+              });
             }
           })
         .catch(() => {
