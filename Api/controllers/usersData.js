@@ -59,7 +59,7 @@ const get_User = async (request, response) => {
         });
       }
   })
-  .catch((err) => {
+  .catch(() => {
     response.status(400).send({ 
       message: "Authentication Failed!" 
     });
@@ -144,7 +144,7 @@ const update_User = async (request, response) => {
             const valid = await bcrypt.compare(decodedPassword,user.getDataValue("password")) 
             if (valid === true && decodedUsername === user.getDataValue("username")){
               const salt = await bcrypt.genSalt(10);
-              let hash = await bcrypt.hash(password, salt);
+              let hash = await bcrypt.hash(pass, salt);
               User.update({
                 password: hash,
                 first_name: first_name,
@@ -179,7 +179,17 @@ const update_User = async (request, response) => {
                         message: "User Authentication failed" 
                       });
                     }
+                  else{
+                    response.status(401).send({ 
+                      message: "User Authentication failed" 
+                    });
+                  }
             }
+          })
+        .catch(() => {
+            response.status(400).send({
+              message: "Bad Request",
+            });
           });
         }}
 };

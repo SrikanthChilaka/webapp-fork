@@ -245,6 +245,11 @@ const put_Product = async(request,response)=>{
                 });
                 }}
             )
+            .catch(()=>{
+                response.status(401).send({
+                    message: "Check the User ID!",
+                })
+            })
         }
     }
 };
@@ -337,6 +342,11 @@ const patch_Product = async(request,response)=>{
                 });
                 }}
             )
+            .catch(()=>{
+                response.status(401).send({
+                    message: "Check the User ID!",
+                })
+            })
         }
     }
 };
