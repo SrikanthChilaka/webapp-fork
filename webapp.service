@@ -3,8 +3,8 @@ Description=Web App
 After=cloud-final.service
 
 [Service]
-WorkingDirectory=/home/ec2-user/webapp/webapp-fork
-ExecStart=/usr/bin/node /home/ec2-user/webapp/webapp-fork/listener.js
+WorkingDirectory=/home/ec2-user/webapp/
+ExecStart=/usr/bin/node /home/ec2-user/webapp/listener.js
 Restart=always
 RestartSec=10
 StandardOutput=syslog
