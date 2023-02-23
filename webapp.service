@@ -1,0 +1,17 @@
+[Unit]
+Description=Web App
+After=cloud-final.service
+
+[Service]
+WorkingDirectory=/home/ec2-user/webapp/webapp-fork
+ExecStart=/usr/bin/node /home/ec2-user/webapp/webapp-fork/listener.js
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=webapp-app
+User=ec2-user
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=cloud-init.target
