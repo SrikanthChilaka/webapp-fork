@@ -3,8 +3,12 @@
 ## Srikanth Chilaka - 002780059
 
 ## Aim
+Building Custom Application AMI using Packer
 Build APIs for the web application for user to write and edit details using Node.js
+Continuous Integration adds new GitHub Actions Workflow for Web App
 ## Features
+As a user, I will be able to use Amazon Linux 2 as the source image to create a custom AMI using Packer.
+
 As a user, I will be able to create an account by providing the following information.
     Email Address
     Password
@@ -14,8 +18,9 @@ As a user, I will be able to create an account by providing the following inform
 As a user, I will be able to update and get the account information after entering the credentials using basic auth.
 
 As a user, I can also add products, update them respectively.
-## Requirements
 
+Setup Autorun Using Systemd
+## Requirements
 Node.js
 Express.js
 Sequelize
@@ -25,8 +30,13 @@ Postman
 Mocha
 Supertest
 Chai
+Packer
+Terraform
+AWS CLI
 
 ## Steps for Execution
+When a pull request is merged, the GitHub Actions workflow will be triggered.
+
 Run: node listener.js
 Test: npm run test
 
@@ -51,4 +61,3 @@ GET /v1/product/:productID
 ### Update Product by id
 PUT /v1/product/:productID
 PATCH /v1/product/:productID
-
