@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const {where} = require("sequelize");
 const AWS = require("aws-sdk")
 const multer = require("multer")
-const multerS3 = require("multer-s3")
 const { v4: uuidv4 } = require("uuid");
 
 // Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});
