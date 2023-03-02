@@ -421,8 +421,7 @@ const delete_Product = async(request, response) =>{
 };
 
 const s3 = new AWS.S3({
-    // accessKeyId: 'AKIA3EFUIO4NLYYK34NL',
-    // secretAccessKey: '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',
+    
     aws_region: process.env.AWS_REGION,
 });
   
@@ -440,7 +439,9 @@ const upload_Image = (req, res) => {
             message: "No Auth",
         });
     } else if (!id || typeof id === "string") {
-      // handle invalid id
+      res.status(400).send({
+        message: "Check ID!",
+    });
     } else {
         const encodedToken = req.headers.authorization.split(" ")[1];
         const baseToAlpha = base64.decode(encodedToken).split(":");
