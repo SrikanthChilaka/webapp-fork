@@ -1,4 +1,4 @@
-# CSYE6225 Network Structures and Cloud Computing Assignment-4
+# CSYE6225 Network Structures and Cloud Computing Assignment-5
 
 ## Srikanth Chilaka - 002780059
 
@@ -18,6 +18,8 @@ As a user, I will be able to create an account by providing the following inform
 As a user, I will be able to update and get the account information after entering the credentials using basic auth.
 
 As a user, I can also add products, update them respectively.
+
+As a user, I can upload images to the products that are created.
 
 Setup Autorun Using Systemd
 ## Requirements
@@ -61,3 +63,18 @@ GET /v1/product/:productID
 ### Update Product by id
 PUT /v1/product/:productID
 PATCH /v1/product/:productID
+
+### Delete Product by id
+DELETE /v1/product/:productID
+
+### Create Image
+POST /v1/product/:productId/image
+
+### Retrieve Product Image Details
+GET /v1/product/:productId/image
+
+### Retrieve Image Details
+GET /v1/product/:productId/image/:imageId
+
+### Delete Image
+DELETE /v1/product/:productId/image/:imageId

@@ -1,6 +1,6 @@
 const express = require("express");
 const {healthCheck,create_User, get_User, update_User} =require( '../controllers/usersData.js');
-const { post_Product, get_Product, put_Product, patch_Product, delete_Product } = require("../controllers/productData.js");
+const { post_Product, get_Product, put_Product, patch_Product, delete_Product, upload_Image, delete_Image, get_Image, get_Images_By_ProdId } = require("../controllers/productData.js");
 
 const router = express.Router();
 
@@ -22,5 +22,12 @@ router.route('/v1/product/:id')
       .get(get_Product)
       .put(put_Product)
       .patch(patch_Product)
-      
+
+router.route('/v1/product/:productId/image')
+      .post(upload_Image)
+      .get(get_Images_By_ProdId)
+router.route('/v1/product/:productId/image/:imageId')
+      .delete(delete_Image)
+      .get(get_Image)
+
 module.exports=router

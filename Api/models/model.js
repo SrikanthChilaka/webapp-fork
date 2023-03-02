@@ -79,4 +79,27 @@ const Product = sequelize.define("product", {
     timestamps: true
 });
 
-module.exports = {User, Product,sequelize};
+const Image = sequelize.define("image", {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    product_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    file_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    s3_bucket_path: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    
+}, {
+    timestamps: true
+});
+
+module.exports = {User, Product, Image, sequelize};
