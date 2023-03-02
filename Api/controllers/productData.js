@@ -472,21 +472,19 @@ const upload_Image = (req, res) => {
                             return res.status(400).json({ message: err.message });
                         }
   
-              // Image was successfully uploaded to memory buffer
-                        const imageData = req.file.buffer;
-                        const imageName = `${uuidv4()}-${req.file.originalname}`;
+                        const image_Data = req.file.buffer;
+                        const image_Name = `${uuidv4()}-${req.file.originalname}`;
                         const fileTypes = /jpeg|jpg|png/;
-                        if(!fileTypes.test(imageName.toLowerCase()))
+                        if(!fileTypes.test(image_Name.toLowerCase()))
                         {
-                            return res.status(401).json({ message: "Check the input" });
+                            return res.status(401).json({ message: "Check the input!" });
                         }
-                        const bucketName = process.env.AWS_BUCKET_NAME;
-              
-              // Upload the image to S3
+                        const aws_bucketName = process.env.AWS_BUCKET_NAME;
+
                         const params = {
-                            Bucket: bucketName,
-                            Key: imageName,
-                            Body: imageData,
+                            Bucket: aws_bucketName,
+                            Key: image_Name,
+                            Body: image_Data,
                             ContentType: req.file.mimetype,
                         };
                         s3.upload(params, (err, data) => {
@@ -494,13 +492,11 @@ const upload_Image = (req, res) => {
                                 return res.status(400).json({ message: err.message });
                             }
   
-                // Image was successfully uploaded to S3
                             const imageUrl = data.Location;
                 
-                // Get the metadata for the uploaded image
                             const params = {
-                                Bucket: bucketName,
-                                Key: imageName,
+                                Bucket: aws_bucketName,
+                                Key: image_Name,
                             };
                             s3.headObject(params, function (err, metadata) {
                   
@@ -508,9 +504,8 @@ const upload_Image = (req, res) => {
                                     return res.status(400).json({ message: err.message });
                                 }
                                 Image.create({
-                          
                                     product_id: id,
-                                    file_name:imageName,
+                                    file_name:image_Name,
                                     s3_bucket_path:imageUrl,
                                     createdAt: new Date(),     
                                 })
@@ -528,25 +523,24 @@ const upload_Image = (req, res) => {
                 }
           
                 else if(existing_user){
-            
                     res.status(403).send({
                         message: "Access denied!",
                     });
                 }
                 else{
                     res.status(401).send({
-                        message: "Check the ID",
+                        message: "Check the ID!",
                     });
                 }
             })
             .catch(()=> {
                 res.status(401).send({
-                    message: "Check the ID",
+                    message: "Check the ID!",
                 });
             });
         }).catch(() => {
             res.status(401).send({
-                message: "Check the ID",
+                message: "Check the ID!",
             });
         });
     }
@@ -596,9 +590,9 @@ const delete_Image = (req, res) => {
                     } else {
                         const valid = await bcrypt.compare(decodedPassword, user.getDataValue("password") );
                         if (valid === true && decodedUsername === user.getDataValue("username")) {
-                            const bucketName = process.env.AWS_BUCKET_NAME;;
+                            const aws_bucketName = process.env.AWS_BUCKET_NAME;;
                             const params = {
-                                Bucket: bucketName,
+                                Bucket: aws_bucketName,
                                 Key: image.getDataValue("file_name"),
                             };
                             s3.deleteObject(params, function (err, data) {
@@ -743,8 +737,6 @@ const get_Image = (req, res) => {
         console.log(error);
         return res.status(500).json({ message: "Server Error!" });
       });
-  
-      
   };
   
 module.exports = {post_Product, get_Product, put_Product, patch_Product, delete_Product, upload_Image, delete_Image, get_Image, get_Images_By_ProdId};
