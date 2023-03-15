@@ -78,3 +78,5 @@ GET /v1/product/:productId/image/:imageId
 
 ### Delete Image
 DELETE /v1/product/:productId/image/:imageId
+
+
