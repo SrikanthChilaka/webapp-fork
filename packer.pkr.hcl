@@ -29,6 +29,11 @@ build {
         destination = "/home/ec2-user/webapp.zip"
     }
 
+    provisioner "file" {
+    source      = "./config.json"
+    destination = "/tmp/config.json"
+  }
+
     # provisioner "file" {
     #     source = "./webapp.service"
     #     destination = "/tmp/webapp.service"

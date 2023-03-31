@@ -6,6 +6,7 @@ sudo amazon-linux-extras install -y nginx1
 sudo amazon-linux-extras install -y epel
 # sudo yum remove libuv -y
 # sudo yum install libuv --disableplugin=priorities
+sudo yum install amazon-cloudwatch-agent -y
 sudo yum install -y curl
 curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
 sudo yum install -y nodejs
