@@ -1,6 +1,8 @@
 const base64 = require("base-64");
 const bcrypt = require("bcrypt");
 const {User} = require("../models/model.js");
+const StatsD = require('hot-shots');
+const statsd = new StatsD({ host: 'localhost', port: 8125 });
 
 function putvalidation(id, password, first_name, last_name) {
   if (!id || !password || !first_name || !last_name) return false;
@@ -18,6 +20,7 @@ function postvalidation(username, password, first_name, last_name) {
 const get_User = async (request, response) => {
   let authheader = request.headers.authorization;
   if (!authheader) {
+    statsd.increment('getusernoauth')
     response.status(400).send({
       message: "No Auth",})
   }
@@ -38,28 +41,33 @@ const get_User = async (request, response) => {
                 account_created: user.createdAt,
                 account_updated: user.updatedAt,
             }
+            statsd.increment('getuser')
             response.status(200).json({
               success: true,
               data: data
             });
           });
         } else {
+          statsd.increment('getuserinvalid')
             response.status(401).send({ 
               message: "Authentication Failed! Wrong Password" });
           }
       })
       .catch((err) => {
+        statsd.increment('getuserinvalid')
         response.status(400).send({ 
           message: "Authentication Failed!" 
         });
       });
     } else {
+        statsd.increment('getuserinvalid')
         response.status(403).send({ 
           message: "Cannot see other user details!" 
         });
       }
   })
   .catch(() => {
+    statsd.increment('getuserinvalid')
     response.status(400).send({ 
       message: "Authentication Failed!" 
     });
@@ -68,6 +76,7 @@ const get_User = async (request, response) => {
 const create_User = async (request, response) => {
   let { username, password, first_name, last_name } = request.body;
   if (!postvalidation(username, password, first_name, last_name)) {
+    statsd.increment('createuserinvalid')
     response.status(400).send({ message: "Invalid entry" });
   } else {
     const salt = await bcrypt.genSalt(10);
@@ -85,6 +94,7 @@ const create_User = async (request, response) => {
     })
       .then(([acknowledgement, stat]) => {
         if (stat) {
+          statsd.increment('createuser')
           response.status(201).send({
             id: acknowledgement.getDataValue("id"),
             username: acknowledgement.getDataValue("username"),
@@ -94,10 +104,12 @@ const create_User = async (request, response) => {
             account_updated: acknowledgement.getDataValue("updatedAt"),
           });
         } else {
+          statsd.increment('createuserinvalid')
           response.status(400).send({ message: "Username Exists!" });
         }
       })
       .catch(() => {
+        statsd.increment('createuserinvalid')
         response.status(400).send({
           message: "Bad Request",
         });
@@ -107,6 +119,7 @@ const create_User = async (request, response) => {
 const update_User = async (request, response) => {
   const id = Number(request.params.id);
   if(!request.headers.authorization){
+    statsd.increment('updtusernoauth')
     response.status(400).send({
       message: "No Auth",
     })
@@ -125,6 +138,7 @@ const update_User = async (request, response) => {
     let decodedUsername = baseToAlpha[0];
     let decodedPassword = baseToAlpha[1];
     if (username || account_created || account_updated) {
+      statsd.increment('updtuserinvalid')
       response.status(400).send({
       message: "Bad Request. Cannot update",
     });
@@ -158,15 +172,18 @@ const update_User = async (request, response) => {
                 },
               })
                 .then((result) => {
+                  statsd.increment('updtuser')
                   response.status(204).send({});
                 })
                 .catch(() => {
+                  statsd.increment('updtuserinvalid')
                   response.status(400).send({
                   message: "Bad Request. Incorrect inputs for Update",
                   });
                 });
                 } 
                 else if(id!==user.getDataValue("id")){
+                  statsd.increment('updtuserinvalid')
                   response.status(403).send({
                     message:"Forbidden Error"
                   })
@@ -175,6 +192,7 @@ const update_User = async (request, response) => {
                     valid === false ||
                     decodedUsername !== user.getDataValue("username")) 
                     {
+                      statsd.increment('updtuserinvalid')
                       response.status(401).send({ 
                         message: "User Authentication failed" 
                       });
@@ -182,12 +200,14 @@ const update_User = async (request, response) => {
                   
             }
             else{
+              statsd.increment('updtuserinvalid')
               response.status(401).send({ 
                 message: "User Authentication failed" 
               });
             }
           })
         .catch(() => {
+          statsd.increment('updtuserinvalid')
             response.status(400).send({
               message: "Bad Request",
             });
@@ -197,8 +217,10 @@ const update_User = async (request, response) => {
 
 const healthCheck = async (request, response) => {
   try {
+    statsd.increment('healthz')
     response.status(200).send({ message: "Health check completed successfully" });
   } catch (error) {
+    statsd.increment('healthzinvalid')
     response.status(404).send({ message: "Health check failed" });
   }
 };

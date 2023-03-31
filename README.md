@@ -22,6 +22,10 @@ As a user, I can also add products, update them respectively.
 As a user, I can upload images to the products that are created.
 
 Setup Autorun Using Systemd
+
+Updated the packer template to install the Unified CloudWatch Agent in the AMI
+
+The CloudWatch agent must be set up to start automatically when an EC2 instance is launched using the AMI
 ## Requirements
 Node.js
 Express.js
@@ -35,6 +39,8 @@ Chai
 Packer
 Terraform
 AWS CLI
+StatsD
+Morgan
 
 ## Steps for Execution
 When a pull request is merged, the GitHub Actions workflow will be triggered.
