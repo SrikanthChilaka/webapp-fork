@@ -10,6 +10,7 @@ sudo yum install amazon-cloudwatch-agent -y
 sudo yum install -y curl
 curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
 sudo yum install -y nodejs
+sudo systemctl enable amazon-cloudwatch-agent.service
 # sudo yum install npm
 # sudo yum install -y https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm
 # sudo yum install -y mysql-community-server
