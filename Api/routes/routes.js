@@ -13,6 +13,8 @@ router.route('/v1/user/:id')
 
 router.route('/healthz')
       .get(healthCheck)
+router.route('/health')
+      .get(healthCheck)
 
 router.route('/v1/product')
       .post(post_Product)
