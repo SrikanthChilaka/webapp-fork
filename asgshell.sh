@@ -1,3 +1,4 @@
+#!/bin/bash
 asg_name="webapp_asg"
 
 # Check if the autoscaling group exists
