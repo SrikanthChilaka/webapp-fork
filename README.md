@@ -84,3 +84,5 @@ GET /v1/product/:productId/image/:imageId
 
 ### Delete Image
 DELETE /v1/product/:productId/image/:imageId
+
+aws acm import-certificate --certificate fileb://prod_srikanthchilaka_me.pem --certificate-chain fileb://prod_srikanthchilaka_me_ca_bundle.pem --private-key fileb://private_key.pem --profile demo  
