@@ -19,7 +19,7 @@ echo "The latest AMI is: $latest_ami"
 
 # Update the launch template with the latest AMI
 aws ec2 create-launch-template-version \
---launch-template-name asg-launch-template \
+--launch-template-name webapp_asg_launch_template \
 --source-version 1 \
 --launch-template-data '{"ImageId":'$latest_ami'}'
 
