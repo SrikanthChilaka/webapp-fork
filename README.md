@@ -86,5 +86,5 @@ GET /v1/product/:productId/image/:imageId
 DELETE /v1/product/:productId/image/:imageId
 
 ### Command to import the certificate 
-Requested an SSL certificate from Namecheap, imported it into AWS Certificate Manager from the CLI, and then configured the load balancer to use the imported certificate
+Requested an SSL certificate from Namecheap, imported it into AWS Certificate Manager from the CLI, and then configured the load balancer to use the imported certificate \n
 aws acm import-certificate --certificate fileb://prod_srikanthchilaka_me.pem --certificate-chain fileb://prod_srikanthchilaka_me_ca_bundle.pem --private-key fileb://private_key.pem --profile demo
