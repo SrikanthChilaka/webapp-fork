@@ -7,7 +7,7 @@ const router = express.Router();
 router.route('/v1/user')
       .post(create_User)
 
-router.route('/v1/user/:id')
+router.route('/v2/user/:id')
       .get(get_User)
       .put(update_User)
 
