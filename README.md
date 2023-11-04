@@ -1,4 +1,4 @@
-# CSYE6225 Network Structures and Cloud Computing Assignment-9
+# CSYE6225 Network Structures and Cloud Computing Assignment
 
 ## Srikanth Chilaka - 002780059
 
